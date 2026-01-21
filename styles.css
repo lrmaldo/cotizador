@@ -1,0 +1,28 @@
+/* styles.css */
+/* Estilos adicionales que Tailwind no cubre o personalizaciones específicas */
+
+.loader {
+    border-top-color: #3498db;
+    -webkit-animation: spinner 1.5s linear infinite;
+    animation: spinner 1.5s linear infinite;
+}
+
+@keyframes spinner {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Ocultar elementos durante la generación del PDF */
+.html2pdf__page-break {
+    page-break-after: always;
+}
+
+/* Estilo para la vista de impresión/PDF invisible en pantalla */
+#pdf-template {
+    position: absolute;
+    left: -9999px;
+    top: 0;
+    width: 800px; /* Ancho fijo para A4 aprox */
+    background: white;
+    padding: 40px;
+}
