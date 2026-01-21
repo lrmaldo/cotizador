@@ -81,6 +81,13 @@ function initApp() {
         allQuotes = [];
         querySnapshot.forEach((doc) => allQuotes.push({ id: doc.id, ...doc.data() }));
         renderQuotes();
+    }, (error) => {
+        console.error("Error obteniendo datos: ", error);
+        if (error.code === 'permission-denied') {
+            showToast('Permiso denegado. Intenta cerrar sesión y volver a entrar.', 'error');
+        } else {
+            showToast('Error de conexión con Firebase.', 'error');
+        }
     });
 }
 
