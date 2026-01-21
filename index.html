@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestor de Cotizaciones - Dev Services</title>
+    <!-- Tailwind CSS Script (Para desarrollo rápido) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#2563eb',
+                        secondary: '#1e40af',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-100 min-h-screen text-gray-800 font-sans">
+
+    <!-- Navbar -->
+    <nav class="bg-white shadow-md">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-primary">CotizaWeb <span class="text-gray-500 text-sm font-normal">Manager</span></h1>
+            <div id="auth-container">
+                <!-- Aquí podría ir el botón de login en el futuro -->
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mx-auto px-4 py-8">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            
+            <!-- Formulario de Cotización -->
+            <div class="md:col-span-1">
+                <div class="bg-white rounded-lg shadow-lg p-6 sticky top-8">
+                    <h2 class="text-xl font-semibold mb-4 text-gray-700 border-b pb-2">Nueva Cotización</h2>
+                    <form id="quote-form" class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-600 mb-1">Cliente / Empresa</label>
+                            <input type="text" id="client" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary focus:outline-none" placeholder="Ej: Tech Solutions SRL" required>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-600 mb-1">Tipo de Proyecto</label>
+                            <select id="type" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary focus:outline-none">
+                                <option value="Landing Page">Landing Page</option>
+                                <option value="E-commerce">E-commerce</option>
+                                <option value="App Web">Aplicación Web</option>
+                                <option value="Mantenimiento">Mantenimiento / Soporte</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-600 mb-1">Descripción</label>
+                            <textarea id="description" rows="3" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary focus:outline-none" placeholder="Detalles del requerimiento..." required></textarea>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-600 mb-1">Precio Estimado (USD)</label>
+                            <input type="number" id="price" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary focus:outline-none" placeholder="0.00" required>
+                        </div>
+
+                        <button type="submit" class="w-full bg-primary hover:bg-secondary text-white font-bold py-2 px-4 rounded-lg transition duration-200">
+                            Guardar Cotización
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Lista de Cotizaciones -->
+            <div class="md:col-span-2">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-semibold text-gray-700">Cotizaciones Recientes</h2>
+                    <span id="total-quotes" class="bg-blue-100 text-primary text-xs font-semibold px-2.5 py-0.5 rounded">0</span>
+                </div>
+                
+                <!-- Contenedor donde se inyectarán las cotizaciones -->
+                <div id="quotes-container" class="grid grid-cols-1 gap-4">
+                    <!-- Loader -->
+                    <div class="text-center py-10 text-gray-500 animate-pulse">
+                        Cargando cotizaciones...
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal de Notificación (Simple) -->
+    <div id="toast" class="fixed bottom-5 right-5 bg-green-500 text-white px-6 py-3 rounded shadow-lg transform translate-y-20 transition-transform duration-300 opacity-0">
+        Cotización guardada exitosamente
+    </div>
+
+    <!-- Scripts -->
+    <!-- Type module permite usar imports en el navegador -->
+    <script type="module" src="app.js"></script>
+</body>
+</html>
