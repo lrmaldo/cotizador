@@ -328,11 +328,27 @@ window.app.exportPDF = (id) => {
     `;
 
     refs.pdfTemplate.innerHTML = template;
+    refs.pdfTemplate.style.display = 'block';
     
+    const opt = {
+        margin: 10,
+        filename: `Cotizacion-${quote.number}.pdf`,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    };
+
     html2pdf()
-        .set({ margin: 10, filename: `Cotizacion-${quote.number}.pdf` })
+        .set(opt)
         .from(refs.pdfTemplate)
-        .save();
+        .save()
+        .then(() => {
+            refs.pdfTemplate.style.display = 'none';
+        })
+        .catch((err) => {
+            console.error(err);
+            refs.pdfTemplate.style.display = 'none';
+        });
 };
 
 // --- RENDER ---

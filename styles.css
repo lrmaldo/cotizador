@@ -19,10 +19,13 @@
 
 /* Estilo para la vista de impresión/PDF invisible en pantalla */
 #pdf-template {
-    position: absolute;
-    left: -9999px;
+    display: none;
+    position: fixed;
     top: 0;
-    width: 800px; /* Ancho fijo para A4 aprox */
+    left: 0;
+    width: 100%;
+    max-width: 800px;
     background: white;
+    z-index: 9999;
     padding: 40px;
 }
