@@ -1,0 +1,26 @@
+[debug] [2026-01-21T21:22:51.920Z] ----------------------------------------------------------------------
+[debug] [2026-01-21T21:22:51.942Z] Command:       C:\nvm4w\nodejs\node.exe C:\nvm4w\nodejs\node_modules\firebase-tools\lib\bin\firebase.js deploy
+[debug] [2026-01-21T21:22:51.943Z] CLI Version:   15.3.1
+[debug] [2026-01-21T21:22:51.943Z] Platform:      win32
+[debug] [2026-01-21T21:22:51.943Z] Node Version:  v20.19.1
+[debug] [2026-01-21T21:22:51.944Z] Time:          Wed Jan 21 2026 15:22:51 GMT-0600 (hora estándar central)
+[debug] [2026-01-21T21:22:51.944Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2026-01-21T21:22:54.774Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-01-21T21:22:54.774Z] > authorizing via signed-in user (lrmaldo@gmail.com)
+[debug] [2026-01-21T21:22:54.774Z] [iam] checking project leo-cotizador for permissions ["firebase.projects.get","firebasehosting.sites.update"]
+[debug] [2026-01-21T21:22:54.776Z] Checked if tokens are valid: false, expires at: 1769029194297
+[debug] [2026-01-21T21:22:54.777Z] Checked if tokens are valid: false, expires at: 1769029194297
+[debug] [2026-01-21T21:22:54.777Z] > refreshing access token with scopes: []
+[debug] [2026-01-21T21:22:54.780Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2026-01-21T21:22:54.780Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2026-01-21T21:22:55.096Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2026-01-21T21:22:55.097Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2026-01-21T21:22:55.133Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/leo-cotizador:testIamPermissions [none]
+[debug] [2026-01-21T21:22:55.134Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/leo-cotizador:testIamPermissions x-goog-quota-user=projects/leo-cotizador
+[debug] [2026-01-21T21:22:55.134Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/leo-cotizador:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2026-01-21T21:22:55.532Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/leo-cotizador:testIamPermissions 200
+[debug] [2026-01-21T21:22:55.532Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/leo-cotizador:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2026-01-21T21:22:55.533Z] Checked if tokens are valid: true, expires at: 1769034174097
+[debug] [2026-01-21T21:22:55.533Z] Checked if tokens are valid: true, expires at: 1769034174097
+[debug] [2026-01-21T21:22:55.534Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/leo-cotizador [none]
