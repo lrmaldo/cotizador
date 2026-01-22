@@ -276,79 +276,151 @@ window.app.exportPDF = (id) => {
     if (!quote) return;
 
     const itemsHtml = quote.items.map(item => `
-        <tr style="border-bottom:1px solid #eee;">
-            <td style="padding:8px;">${item.description}</td>
-            <td style="padding:8px;text-align:center;">${item.quantity}</td>
-            <td style="padding:8px;text-align:right;">$${item.price.toFixed(2)}</td>
-            <td style="padding:8px;text-align:right;">$${item.total.toFixed(2)}</td>
+        <tr class="border-b border-gray-200">
+            <td class="py-3 px-4">${item.description}</td>
+            <td class="py-3 px-4 text-center">${item.quantity}</td>
+            <td class="py-3 px-4 text-right">$${item.price.toFixed(2)}</td>
+            <td class="py-3 px-4 text-right font-medium">$${item.total.toFixed(2)}</td>
         </tr>
     `).join('');
 
-    const template = `
-        <div style="font-family: sans-serif; color: #333;">
-            <div style="display:flex; justify-content:space-between; margin-bottom: 40px;">
-                <div>
-                    <h1 style="color:#2563eb; margin:0;">CotizaWeb</h1>
-                    <p style="margin:5px 0;">Dev Services</p>
+    const content = `
+        <!DOCTYPE html>
+        <html lang="es">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Cotización #${quote.number}</title>
+            <script src="https://cdn.tailwindcss.com"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+            <style>
+                @media print {
+                    .no-print { display: none !important; }
+                    body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+                }
+            </style>
+        </head>
+        <body class="bg-gray-100 min-h-screen p-8">
+            <!-- Toolbar -->
+            <div class="no-print max-w-[210mm] mx-auto mb-6 flex justify-between items-center bg-white p-4 rounded-lg shadow-md border border-gray-200">
+                <div class="font-semibold text-gray-700">Vista Previa</div>
+                <div class="flex gap-3">
+                    <button onclick="window.close()" class="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-md font-medium transition">
+                        Cerrar
+                    </button>
+                    <button onclick="downloadImage()" class="px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-md font-bold flex items-center gap-2 transition shadow-md">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                        Descargar Imagen
+                    </button>
+                    <button onclick="window.print()" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md font-bold flex items-center gap-2 transition shadow-md">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" /></svg>
+                        Imprimir / PDF
+                    </button>
                 </div>
-                <div style="text-align:right;">
-                    <h2 style="margin:0;">COTIZACIÓN</h2>
-                    <p style="color:#666; margin:5px 0;">#${quote.number}</p>
-                    <p style="font-size:12px;">Fecha: ${new Date().toLocaleDateString()}</p>
+            </div>
+
+            <!-- Page A4 -->
+            <div id="capture-target" class="mx-auto bg-white shadow-xl overflow-hidden" style="width: 210mm; min-height: 297mm;">
+                <div class="p-12">
+                    <!-- Header -->
+                    <div class="flex justify-between items-start mb-12">
+                        <div>
+                            <h1 class="text-4xl font-extrabold text-blue-600 tracking-tight">Ing.Leonardo Maldonado</h1>
+                            <div class="text-gray-500 mt-1 font-medium">Dev Services</div>
+                        </div>
+                        <div class="text-right">
+                            <h2 class="text-2xl font-bold text-gray-800">COTIZACIÓN</h2>
+                            <div class="text-gray-500 mt-1">#${quote.number}</div>
+                            <div class="text-sm text-gray-400 mt-1">Fecha: ${new Date().toLocaleDateString()}</div>
+                        </div>
+                    </div>
+
+                    <!-- Client Info -->
+                    <div class="bg-gray-50 rounded-lg p-6 mb-8 border border-gray-100">
+                        <div class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Cliente</div>
+                        <div class="text-xl font-bold text-gray-800">${quote.client.name}</div>
+                        ${quote.client.company ? `<div class="text-gray-600">${quote.client.company}</div>` : ''}
+                        <div class="text-blue-500 text-sm mt-1">${quote.client.email}</div>
+                    </div>
+
+                    <!-- Items Table -->
+                    <table class="w-full mb-8">
+                        <thead>
+                            <tr class="bg-blue-600 text-white text-xs uppercase tracking-wider">
+                                <th class="py-3 px-4 text-left rounded-tl-lg">Descripción</th>
+                                <th class="py-3 px-4 text-center">Cant.</th>
+                                <th class="py-3 px-4 text-right">Precio</th>
+                                <th class="py-3 px-4 text-right rounded-tr-lg">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-sm text-gray-700">
+                            ${itemsHtml}
+                        </tbody>
+                    </table>
+
+                    <!-- Totals -->
+                    <div class="flex justify-end">
+                        <div class="w-1/2 space-y-3">
+                            <div class="flex justify-between text-gray-600 border-b border-gray-100 pb-2">
+                                <span>Subtotal:</span>
+                                <span>$${quote.totals.subtotal.toFixed(2)}</span>
+                            </div>
+                            <div class="flex justify-between text-gray-600 border-b border-gray-100 pb-2">
+                                <span>Impuestos (16%):</span>
+                                <span>$${quote.totals.tax.toFixed(2)}</span>
+                            </div>
+                            <div class="flex justify-between text-2xl font-bold text-blue-600 pt-2">
+                                <span>Total:</span>
+                                <span>$${quote.totals.total.toFixed(2)}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Footer -->
+                    <div class="text-center text-gray-400 text-xs border-t pt-8 mt-12">
+                        <p>Gracias por su preferencia. Esta cotización es válida hasta ${new Date(quote.validUntil).toLocaleDateString()}.</p>
+                    </div>
                 </div>
             </div>
 
-            <div style="margin-bottom: 30px; padding: 15px; background: #f9fafb; border-radius: 8px;">
-                <h3 style="margin-top:0; border-bottom:1px solid #ddd; padding-bottom:5px;">Cliente</h3>
-                <p><strong>${quote.client.name}</strong><br>
-                ${quote.client.company}<br>
-                ${quote.client.email}</p>
-            </div>
-
-            <table style="width:100%; border-collapse: collapse; margin-bottom: 30px;">
-                <thead>
-                    <tr style="background:#2563eb; color:white;">
-                        <th style="padding:10px; text-align:left;">Descripción</th>
-                        <th style="padding:10px; text-align:center;">Cant.</th>
-                        <th style="padding:10px; text-align:right;">Precio</th>
-                        <th style="padding:10px; text-align:right;">Total</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    ${itemsHtml}
-                </tbody>
-            </table>
-
-            <div style="text-align:right; margin-top:20px;">
-                <p>Subtotal: <strong>$${quote.totals.subtotal.toFixed(2)}</strong></p>
-                <p>Impuestos: <strong>$${quote.totals.tax.toFixed(2)}</strong></p>
-                <h3 style="color:#2563eb;">Total: $${quote.totals.total.toFixed(2)}</h3>
-            </div>
-        </div>
+            <script>
+                function downloadImage() {
+                    const btn = document.querySelector('button[onclick="downloadImage()"]');
+                    const originalText = btn.innerHTML;
+                    btn.innerHTML = 'Generando...';
+                    
+                    const element = document.getElementById('capture-target');
+                    html2canvas(element, { 
+                        scale: 2,
+                        logging: false,
+                        useCORS: true
+                    }).then(canvas => {
+                        const link = document.createElement('a');
+                        link.download = 'Cotizacion-${quote.number}.png';
+                        link.href = canvas.toDataURL('image/png');
+                        link.click();
+                        btn.innerHTML = originalText;
+                    }).catch(err => {
+                        console.error(err);
+                        alert('Error generando la imagen');
+                        btn.innerHTML = originalText;
+                    });
+                }
+            </script>
+        </body>
+        </html>
     `;
 
-    refs.pdfTemplate.innerHTML = template;
-    refs.pdfTemplate.style.display = 'block';
-    
-    const opt = {
-        margin: 10,
-        filename: `Cotizacion-${quote.number}.pdf`,
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2 },
-        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-    };
-
-    html2pdf()
-        .set(opt)
-        .from(refs.pdfTemplate)
-        .save()
-        .then(() => {
-            refs.pdfTemplate.style.display = 'none';
-        })
-        .catch((err) => {
-            console.error(err);
-            refs.pdfTemplate.style.display = 'none';
-        });
+    // Wait for content to load before writing
+    setTimeout(() => {
+        const printWindow = window.open('', '_blank');
+        if (printWindow) {
+            printWindow.document.write(content);
+            printWindow.document.close();
+        } else {
+            alert('Por favor habilita las ventanas emergentes para ver la cotización.');
+        }
+    }, 100);
 };
 
 // --- RENDER ---

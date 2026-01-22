@@ -17,15 +17,7 @@
     page-break-after: always;
 }
 
-/* Estilo para la vista de impresión/PDF invisible en pantalla */
+/* Estilo base para el template (se controla por JS) */
 #pdf-template {
     display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    max-width: 800px;
-    background: white;
-    z-index: 9999;
-    padding: 40px;
 }
